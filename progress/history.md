@@ -1,4 +1,11 @@
-﻿# Archivo de sesiones anteriores
+﻿## F19: basic_microservice - done 2026-06-14
+Branch: feature/19-spring-boot-microservice
+Status: done - Spring Boot + Gradle containerized build, endpoints /actuator/health and /api/v1/products verified via Docker
+## F19: basic_microservice - done 2026-06-14
+Branch: feature/19-spring-boot-microservice
+Status: done - build via Docker, endpoints verified
+
+# Archivo de sesiones anteriores
 
 > Proyecto: Ecommify PostgreSQL Optimization (Unidad 4)
 
@@ -74,7 +81,7 @@ Configuración completa del entorno MongoDB Atlas para U5 Etapa 1:
   2. Aggregation pipeline 6 stages optimizado (match early + proyección)
   3. Sharding/Replica design teórico (shard key, distribución, replica set, R/W concern)
   4. Monitoreo Atlas (slow query log, métricas clave, Performance Advisor)
-- Layout: 15 cells (9 md + 6 code), autocontenido (conexión → 4 áreas → conclusiones)
+- Layout: 15 cells (9 md + 6 code), autocontenido (conexión ? 4 áreas ? conclusiones)
 - `scripts/verify_env.py` actualizado con check MongoDB Atlas
 - `scripts/check_harness.py` — 30 tests OK
 
@@ -106,7 +113,7 @@ Implementación de 5 índices MongoDB siguiendo regla ESR + índices parciales:
 - **2 Partial indexes**: products_catalog (avg_review_score >= 4.0), event_logs (event_type = product_view)
 - DDL guardado en mongodb/schema/*.json con justificación ESR en cada índice
 - Notebook actualizado con celdas explain() BEFORE/AFTER para los 5 índices (secciones 1.1-1.5)
-- Fix: campo `category_name` → `product_category_name` en schema y todos los índices (coincide con datos reales en Atlas)
+- Fix: campo `category_name` ? `product_category_name` en schema y todos los índices (coincide con datos reales en Atlas)
 
 ### Archivos modificados
 - `mongodb/schema/products_catalog_schema.json` — 2 índices nuevos + fix field name
@@ -115,9 +122,9 @@ Implementación de 5 índices MongoDB siguiendo regla ESR + índices parciales:
 - `notebooks/U5_Etapa1_MongoDB_Optimizacion.ipynb` — 4 nuevas celdas (event_logs + user_sessions explain)
 
 ### Issues encontrados en review
-- 🔴 Faltaban explain() para event_logs y user_sessions → corregido
-- 🟡 Schema usaba `category_name` pero Atlas tiene `product_category_name` → corregido
-- 🔵 Nombres de índices inconsistentes entre DDL y notebook → homogeneizados
+- ?? Faltaban explain() para event_logs y user_sessions ? corregido
+- ?? Schema usaba `category_name` pero Atlas tiene `product_category_name` ? corregido
+- ?? Nombres de índices inconsistentes entre DDL y notebook ? homogeneizados
 
 ### Acceptance criteria: 5/5 PASS
 ### Harness: 30/30 PASS
@@ -191,7 +198,7 @@ Documento de diseño teórico para escalabilidad horizontal y alta disponibilida
 - Distribución: 3 shards multi-región (us-east-1, us-west-2, eu-west-1)
 - Replica set: 3 nodos con prioridades y tags diferenciados
 - Read/Write Concern: matriz por operación (checkout, carrito, búsqueda, reportes, logs)
-- Topología ASCII: client → mongos → shards → config servers
+- Topología ASCII: client ? mongos ? shards ? config servers
 - Read Concern: local, majority, linearizable diferenciados
 
 ### Archivos creados
@@ -214,7 +221,7 @@ Documento de diseño teórico para escalabilidad horizontal y alta disponibilida
 Reporte de monitoreo de rendimiento para MongoDB Atlas:
 - Performance Advisor guide (cómo acceder y usarlo en Atlas UI)
 - Slow query log: 3 queries lentas identificadas con métricas y recomendaciones
-- Index usage statistics: hit ratio 45% → 97% antes/después
+- Index usage statistics: hit ratio 45% ? 97% antes/después
 - Métricas clave: QPS, latencia, docs examinados vs retornados
 - Recomendaciones: 7 acciones basadas en datos de monitoreo
 
@@ -244,3 +251,4 @@ Reporte de monitoreo de rendimiento para MongoDB Atlas:
 
 ### Acceptance criteria: 6/6 PASS
 ### Harness: 49/49 PASS
+
