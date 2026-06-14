@@ -1,9 +1,8 @@
-# Harness repo - ignores project code (src/, tests/)
-.venv/
-__pycache__/
-*.pyc
-.opencode/node_modules/
-
-# Project code (tracked in separate Rafear repo)
-src/
-tests/
+﻿# Ignore everything at root except project files
+/*
+!/.gitignore
+!/Dockerfile
+!/docker-compose.yml
+!/.dockerignore
+!/src/
+!/src/**
