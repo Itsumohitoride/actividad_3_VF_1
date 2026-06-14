@@ -1,0 +1,18 @@
+# Environment-specific values: development
+global:
+  environment: development
+
+replicaCount: 1
+
+image:
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+
+ingress:
+  enabled: false
+
+config:
+  springProfilesActive: dev
