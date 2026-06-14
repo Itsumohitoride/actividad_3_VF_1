@@ -1,0 +1,8 @@
+# Patterns to ignore when packaging
+.git
+.gitignore
+*.md
+*.tgz
+values-dev.yaml
+values-staging.yaml
+values-prod.yaml

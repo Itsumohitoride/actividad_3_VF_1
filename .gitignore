@@ -6,3 +6,5 @@
 !/.dockerignore
 !/src/
 !/src/**
+!/charts/
+!/charts/**

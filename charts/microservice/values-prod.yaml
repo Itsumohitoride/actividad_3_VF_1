@@ -1,0 +1,23 @@
+# Environment-specific values: production
+global:
+  environment: production
+
+replicaCount: 3
+
+image:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  host: api.microservice.com
+  tls: true
+  tlsSecret: microservice-tls
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+
+config:
+  springProfilesActive: prod
