@@ -2,7 +2,7 @@
     "description": "Actividad 3 — Trabajo K8S: Microservicios, Docker, Kubernetes, Helm, ArgoCD, CI/CD",
     "project": "Actividad 3 — K8S Microservices Deployment",
     "stack_default": "devops",
-    "last_updated": "2026-06-14T12:00:00Z",
+    "last_updated": "2026-06-14T17:25:56Z",
     "archived": [
         {
             "id": 1,
@@ -167,9 +167,25 @@
                 "curl http://localhost:8080/actuator/health responde 200",
                 "No requiere Java/Gradle instalado en el host"
             ],
-            "status": "pending",
+            "status": "done",
             "created_at": "2026-06-14T12:00:00Z",
-            "transitions": []
+            "transitions": [
+                {
+                    "from": "pending",
+                    "to": "in_progress",
+                    "at": "2026-06-14T17:09:03Z"
+                },
+                {
+                    "from": "in_progress",
+                    "to": "testing",
+                    "at": "2026-06-14T17:16:13Z"
+                },
+                {
+                    "from": "testing",
+                    "to": "done",
+                    "at": "2026-06-14T17:25:56Z"
+                }
+            ]
         },
         {
             "id": 20,
