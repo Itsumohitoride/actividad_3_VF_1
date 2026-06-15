@@ -1,0 +1,271 @@
+{
+  "entries": [
+    {
+      "date": "2026-06-01T01:52:05.025962+00:00",
+      "feature_id": 11,
+      "feature_name": "elevation_cues",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "15min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-01T02:09:03.996311+00:00",
+      "feature_id": 12,
+      "feature_name": "hrtf_axis_control",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "10min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-01T03:49:16.508022Z",
+      "feature_id": 13,
+      "feature_name": "presence_boost",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "10min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-01T04:33:18.439588Z",
+      "feature_id": 14,
+      "feature_name": "high_shelf_boost",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "10min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-01T04:54:34.611834Z",
+      "feature_id": 15,
+      "feature_name": "low_cut_filter",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "10min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-01T05:09:58.624134Z",
+      "feature_id": 16,
+      "feature_name": "soft_compressor",
+      "model": "big-pickle",
+      "tokens_in": 10000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "10min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-06T02:04:37.805636+00:00",
+      "feature_id": 1,
+      "feature_name": "setup_project_db",
+      "model": "big-pickle",
+      "tokens_in": 30000,
+      "tokens_out": 11900,
+      "cost_usd": 0.0,
+      "duration": "10m",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-07T00:07:07.252159+00:00",
+      "feature_id": 2,
+      "feature_name": "u4_etapa1_explain_analyze",
+      "model": "big-pickle",
+      "tokens_in": 50000,
+      "tokens_out": 15000,
+      "cost_usd": 0.0,
+      "duration": "45min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-07T01:17:51.424847+00:00",
+      "feature_id": 3,
+      "feature_name": "u4_etapa1_indexes",
+      "model": "big-pickle",
+      "tokens_in": 40000,
+      "tokens_out": 12000,
+      "cost_usd": 0.0,
+      "duration": "30min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-07T01:17:51.424847+00:00",
+      "feature_id": 4,
+      "feature_name": "u4_etapa1_partitioning",
+      "model": "big-pickle",
+      "tokens_in": 35000,
+      "tokens_out": 10000,
+      "cost_usd": 0.0,
+      "duration": "30min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-07T01:25:29.502154+00:00",
+      "feature_id": 8,
+      "feature_name": "notebook_etapa1",
+      "model": "big-pickle",
+      "tokens_in": 15000,
+      "tokens_out": 5000,
+      "cost_usd": 0.0,
+      "duration": "15min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "feature_id": 7,
+      "feature_name": "u4_etapa2_partition_implementation",
+      "model": "opencode/big-pickle",
+      "tokens_in": 100000,
+      "tokens_out": 100000,
+      "cost_usd": 0,
+      "date": "2026-06-07T02:13:02Z",
+      "duration": 50,
+      "agents": [
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:02:17.987674+00:00",
+      "feature_id": 10,
+      "feature_name": "setup_mongodb_u5",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:25:27.476311+00:00",
+      "feature_id": 11,
+      "feature_name": "compound_partial_indexes",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:34:12.782066+00:00",
+      "feature_id": 12,
+      "feature_name": "text_indexes_search",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:44:50.058656+00:00",
+      "feature_id": 13,
+      "feature_name": "aggregation_pipeline_optimization",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:54:03.224940+00:00",
+      "feature_id": 14,
+      "feature_name": "sharding_replica_design",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader",
+        "implementer",
+        "reviewer"
+      ]
+    },
+    {
+      "date": "2026-06-13T19:57:09.753340+00:00",
+      "feature_id": 15,
+      "feature_name": "performance_monitoring",
+      "model": "big pickle",
+      "tokens_in": 130000,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "duration": "40 min",
+      "agents": [
+        "leader",
+        "implementer"
+      ]
+    }
+  ],
+  "last_updated": "2026-06-07T02:13:02Z"
+}
