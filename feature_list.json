@@ -276,37 +276,46 @@
                                              "Notificaciones de exito/fallo del pipeline",
                                              "Documentacion del pipeline (estructura, secretos necesarios)"
                                          ],
-                          "status":  "in_progress",
+                          "status":  "done",
                           "created_at":  "2026-06-14T12:00:00Z",
                           "transitions":  [
                                               {
                                                   "from":  "pending",
                                                   "to":  "in_progress",
                                                   "at":  "2026-06-15T18:35:00Z"
+                                              },
+                                              {
+                                                  "from":  "in_progress",
+                                                  "to":  "done",
+                                                  "at":  "2026-06-15T19:20:00Z"
                                               }
                                           ]
-                     },
-                     {
-                         "id":  23,
-                         "name":  "documentation",
-                         "title":  "F23: Documentacion completa del proyecto",
-                         "description":  "Documentar todo el proyecto: README.md con instrucciones de setup, codigo comentado, docs/ actualizados con arquitectura completa, diagrama de flujo CI/CD, instrucciones de rollback, troubleshooting. Documentacion clara, completa y bien estructurada segun rubrica.",
-                         "stack":  "fullstack",
-                         "acceptance":  [
-                                            "README.md con: descripcion, prerequisitos, setup rapido, estructura de directorios",
-                                            "Codigo fuente comentado: clases, metodos, controladores con Javadoc",
-                                            "docs/architecture.md actualizado con diagrama de arquitectura K8S",
-                                            "docs/deployment.md con instrucciones de deploy y rollback",
-                                            "docs/configuration.md con variables de entorno y configuracion Spring Boot",
-                                            "docs/verification.md con pasos para verificar cada componente",
-                                            "Instrucciones de rollback documentadas en docs/deployment.md",
-                                            "Diagrama de flujo CI/CD incluido"
-                                        ],
-                         "status":  "pending",
-                         "created_at":  "2026-06-14T12:00:00Z",
-                         "transitions":  [
-
-                                         ]
+                      },
+                      {
+                          "id":  23,
+                          "name":  "documentation",
+                          "title":  "F23: Documentacion completa del proyecto",
+                          "description":  "Documentar todo el proyecto: README.md con instrucciones de setup, codigo comentado, docs/ actualizados con arquitectura completa, diagrama de flujo CI/CD, instrucciones de rollback, troubleshooting. Documentacion clara, completa y bien estructurada segun rubrica.",
+                          "stack":  "fullstack",
+                          "acceptance":  [
+                                             "README.md con: descripcion, prerequisitos, setup rapido, estructura de directorios",
+                                             "Codigo fuente comentado: clases, metodos, controladores con Javadoc",
+                                             "docs/architecture.md actualizado con diagrama de arquitectura K8S",
+                                             "docs/deployment.md con instrucciones de deploy y rollback",
+                                             "docs/configuration.md con variables de entorno y configuracion Spring Boot",
+                                             "docs/verification.md con pasos para verificar cada componente",
+                                             "Instrucciones de rollback documentadas en docs/deployment.md",
+                                             "Diagrama de flujo CI/CD incluido"
+                                         ],
+                          "status":  "in_progress",
+                          "created_at":  "2026-06-14T12:00:00Z",
+                          "transitions":  [
+                                              {
+                                                  "from":  "pending",
+                                                  "to":  "in_progress",
+                                                  "at":  "2026-06-15T19:20:00Z"
+                                              }
+                                          ]
                      },
                      {
                          "id":  24,
