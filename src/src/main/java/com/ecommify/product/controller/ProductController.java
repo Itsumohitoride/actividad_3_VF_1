@@ -8,10 +8,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador REST para el catalogo de productos.
+ * Expone operaciones CRUD sobre productos via API REST.
+ */
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
+    /**
+     * Lista todos los productos disponibles.
+     * <p>
+     * Retorna un array JSON con productos de ejemplo
+     * (id, nombre, precio).
+     * </p>
+     *
+     * @return lista de productos con status 200 OK
+     */
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> listProducts() {
         var products = List.of(
