@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: microservice
+  namespace: argocd
+  labels:
+    app: microservice
+    app.kubernetes.io/name: microservice-project
+    app.kubernetes.io/part-of: argocd
+spec:
+  description: Microservice project for ArgoCD GitOps deployment
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: dev
+      server: https://kubernetes.default.svc
+    - namespace: staging
+      server: https://kubernetes.default.svc
+    - namespace: production
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  roles:
+    - name: read-only
+      description: Read-only access to the project
+      policies:
+        - p, proj:microservice:read-only, applications, get, microservice/*, allow
+      groups:
+        - platform-readers
+  orphanedResources:
+    warn: false

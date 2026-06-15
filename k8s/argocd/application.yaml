@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: microservice-dev
+  namespace: argocd
+  labels:
+    app: microservice
+    app.kubernetes.io/name: microservice-dev
+    app.kubernetes.io/environment: dev
+    app.kubernetes.io/part-of: argocd
+spec:
+  project: microservice
+  source:
+    repoURL: https://github.com/Itsumohitoride/actividad_3_VF_1.git
+    path: charts/microservice
+    targetRevision: feature/21-argocd-gitops
+    helm:
+      valueFiles:
+        - values-dev.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  info:
+    - name: description
+      value: Microservice Dev Environment
+    - name: team
+      value: platform
