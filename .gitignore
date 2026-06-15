@@ -8,3 +8,13 @@
 !/src/**
 !/charts/
 !/charts/**
+!/.github/
+!/.github/**
+!/docs/
+!/docs/**
+!/progress/
+!/progress/**
+!/feature_list.json
+!/opencode.json
+!/k8s/
+!/k8s/**
