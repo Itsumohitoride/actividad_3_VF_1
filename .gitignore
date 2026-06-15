@@ -6,6 +6,8 @@
 !/.dockerignore
 !/src/
 !/src/**
+/src/.gradle/
+/src/kubectl.exe
 !/charts/
 !/charts/**
 !/.github/
