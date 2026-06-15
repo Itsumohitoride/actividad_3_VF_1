@@ -4,6 +4,18 @@ Microservicio Spring Boot containerizado con Helm charts parametrizables, despli
 
 El stack completo: **Java 21 + Spring Boot 3.2 + Gradle 8 → Docker → Helm → ArgoCD → Kubernetes → GitHub Actions**.
 
+## Descripcion del proyecto
+
+Trabajo practico de arquitectura de software: disenar e implementar microservicios individualmente desplegables utilizando contenedores Docker, Kubernetes como orquestador, Helm para gestion de paquetes y configuraciones, ArgoCD para GitOps, y pipelines CI/CD para automatizar la construccion y despliegue del microservicio al detectar commits en la rama configurada.
+
+### Entregables
+
+- Microservicio Spring Boot funcional, dockerizado, con charts de Helm
+- Despliegue en Kubernetes con ArgoCD (auto-sync, self-heal, prune)
+- Pipelines CI/CD automatizados que detectan commits y despliegan sin errores
+- Documentacion clara, completa y bien estructurada
+- Codigo fuente comentado (Javadoc)
+
 ---
 
 ## Requisitos
@@ -247,8 +259,7 @@ Ver `docs/pipelines.md` para detalle completo.
 │   ├── architecture.md       # Diagramas de arquitectura y flujo CI/CD
 │   ├── configuration.md      # Variables de entorno y configuraciones
 │   ├── deployment.md         # Instrucciones detalladas de deploy y rollback
-│   ├── pipelines.md          # Documentacion de pipelines CI/CD
-│   └── verification.md       # Checklist de verificacion por feature
+│   └── pipelines.md          # Documentacion de pipelines CI/CD
 ├── k8s/argocd/               # Manifiestos ArgoCD
 │   ├── namespace.yaml        # Namespace argocd
 │   ├── install.yaml          # Componentes ArgoCD
@@ -328,4 +339,3 @@ argocd app rollback microservice-dev 1
 | `docs/configuration.md` | Variables de entorno, Spring Boot config, Helm values, secretos |
 | `docs/deployment.md` | Instructivo completo de deploy y rollback |
 | `docs/pipelines.md` | Detalle de workflows CI/CD, secretos, GitOps flow |
-| `docs/verification.md` | Checklist de verificacion por feature (F19-F24) |
