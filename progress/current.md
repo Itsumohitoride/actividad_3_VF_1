@@ -9,25 +9,16 @@
 | 21 | argocd_gitops | done |
 | 22 | ci_cd_pipelines | done |
 | 23 | documentation | done |
-| 24 | video_demo_script | in_progress |
+| 24 | video_demo_script | done |
 
-## Feature activa
+**Todas las features completadas.**
 
-**F24: Guion para video de demostracion (5-10 min)**
-- Branch: feature/23-documentation
-- Inicio: 2026-06-15T19:45
-- Plan: Crear guion estructurado con timeline, dialogos sugeridos, capturas recomendadas
+## Commits
 
-## Acceptance criteria
-
-- Guion con timeline detallado (minuto a minuto)
-- Secciones: demo local, Docker, Helm, ArgoCD, CI/CD, deploy
-- Dialogos sugeridos por seccion
-- Capturas de pantalla recomendadas listadas por seccion
-- Duracion estimada: 5-10 minutos
-- Formato profesional segun rubrica
-
-## Siguiente paso
-
-1. Crear docs/demo-script.md con guion completo
-2. Commit, push, PR
+| Feature | Branch | Commit |
+|---------|--------|--------|
+| F19 | feature/19-spring-boot-microservice | (anterior) |
+| F20 | feature/20-helm-charts | (anterior) |
+| F21 | feature/21-argocd-gitops | `b3a518d` |
+| F22 | feature/22-ci-cd-pipelines | `310cf84` |
+| F23+F24 | feature/23-documentation | `3a4d4f5`, `c1339a1` |

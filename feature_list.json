@@ -336,13 +336,18 @@
                                              "Duracion estimada: 5-10 minutos",
                                              "Formato profesional segun rubrica"
                                          ],
-                          "status":  "in_progress",
+                          "status":  "done",
                           "created_at":  "2026-06-14T12:00:00Z",
                           "transitions":  [
                                               {
                                                   "from":  "pending",
                                                   "to":  "in_progress",
                                                   "at":  "2026-06-15T19:45:00Z"
+                                              },
+                                              {
+                                                  "from":  "in_progress",
+                                                  "to":  "done",
+                                                  "at":  "2026-06-15T20:00:00Z"
                                               }
                                           ]
                      }
