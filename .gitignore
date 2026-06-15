@@ -18,5 +18,6 @@
 !/progress/**
 !/feature_list.json
 !/opencode.json
+!/README.md
 !/k8s/
 !/k8s/**
