@@ -259,8 +259,7 @@ Ver `docs/pipelines.md` para detalle completo.
 │   ├── architecture.md       # Diagramas de arquitectura y flujo CI/CD
 │   ├── configuration.md      # Variables de entorno y configuraciones
 │   ├── deployment.md         # Instrucciones detalladas de deploy y rollback
-│   ├── pipelines.md          # Documentacion de pipelines CI/CD
-│   └── verification.md       # Checklist de verificacion por feature
+│   └── pipelines.md          # Documentacion de pipelines CI/CD
 ├── k8s/argocd/               # Manifiestos ArgoCD
 │   ├── namespace.yaml        # Namespace argocd
 │   ├── install.yaml          # Componentes ArgoCD
@@ -340,4 +339,3 @@ argocd app rollback microservice-dev 1
 | `docs/configuration.md` | Variables de entorno, Spring Boot config, Helm values, secretos |
 | `docs/deployment.md` | Instructivo completo de deploy y rollback |
 | `docs/pipelines.md` | Detalle de workflows CI/CD, secretos, GitOps flow |
-| `docs/verification.md` | Checklist de verificacion por feature (F19-F24) |
