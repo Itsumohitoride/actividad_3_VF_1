@@ -4,6 +4,18 @@ Microservicio Spring Boot containerizado con Helm charts parametrizables, despli
 
 El stack completo: **Java 21 + Spring Boot 3.2 + Gradle 8 → Docker → Helm → ArgoCD → Kubernetes → GitHub Actions**.
 
+## Descripcion del proyecto
+
+Trabajo practico de arquitectura de software: disenar e implementar microservicios individualmente desplegables utilizando contenedores Docker, Kubernetes como orquestador, Helm para gestion de paquetes y configuraciones, ArgoCD para GitOps, y pipelines CI/CD para automatizar la construccion y despliegue del microservicio al detectar commits en la rama configurada.
+
+### Entregables
+
+- Microservicio Spring Boot funcional, dockerizado, con charts de Helm
+- Despliegue en Kubernetes con ArgoCD (auto-sync, self-heal, prune)
+- Pipelines CI/CD automatizados que detectan commits y despliegan sin errores
+- Documentacion clara, completa y bien estructurada
+- Codigo fuente comentado (Javadoc)
+
 ---
 
 ## Requisitos
