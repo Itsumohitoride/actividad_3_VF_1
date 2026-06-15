@@ -276,57 +276,80 @@
                                              "Notificaciones de exito/fallo del pipeline",
                                              "Documentacion del pipeline (estructura, secretos necesarios)"
                                          ],
-                          "status":  "in_progress",
+                          "status":  "done",
                           "created_at":  "2026-06-14T12:00:00Z",
                           "transitions":  [
                                               {
                                                   "from":  "pending",
                                                   "to":  "in_progress",
                                                   "at":  "2026-06-15T18:35:00Z"
+                                              },
+                                              {
+                                                  "from":  "in_progress",
+                                                  "to":  "done",
+                                                  "at":  "2026-06-15T19:20:00Z"
                                               }
                                           ]
-                     },
-                     {
-                         "id":  23,
-                         "name":  "documentation",
-                         "title":  "F23: Documentacion completa del proyecto",
-                         "description":  "Documentar todo el proyecto: README.md con instrucciones de setup, codigo comentado, docs/ actualizados con arquitectura completa, diagrama de flujo CI/CD, instrucciones de rollback, troubleshooting. Documentacion clara, completa y bien estructurada segun rubrica.",
-                         "stack":  "fullstack",
-                         "acceptance":  [
-                                            "README.md con: descripcion, prerequisitos, setup rapido, estructura de directorios",
-                                            "Codigo fuente comentado: clases, metodos, controladores con Javadoc",
-                                            "docs/architecture.md actualizado con diagrama de arquitectura K8S",
-                                            "docs/deployment.md con instrucciones de deploy y rollback",
-                                            "docs/configuration.md con variables de entorno y configuracion Spring Boot",
-                                            "docs/verification.md con pasos para verificar cada componente",
-                                            "Instrucciones de rollback documentadas en docs/deployment.md",
-                                            "Diagrama de flujo CI/CD incluido"
-                                        ],
-                         "status":  "pending",
-                         "created_at":  "2026-06-14T12:00:00Z",
-                         "transitions":  [
-
-                                         ]
-                     },
-                     {
-                         "id":  24,
-                         "name":  "video_demo_script",
-                         "title":  "F24: Guion para video de demostracion (5-10 min)",
-                         "description":  "Crear guion estructurado para video de demostracion de 5-10 minutos mostrando: (a) Microservicio Spring Boot funcionando local, (b) Docker build y push, (c) Helm charts y values, (d) ArgoCD UI con sincronizacion, (e) CI/CD pipeline en accion, (f) Deploy exitoso y verificacion. Incluir timeline, dialogos sugeridos, capturas de pantalla recomendadas.",
-                         "stack":  "fullstack",
-                         "acceptance":  [
-                                            "Guion con timeline detallado (minuto a minuto)",
-                                            "Secciones: demo local, Docker, Helm, ArgoCD, CI/CD, deploy",
-                                            "Dialogos sugeridos por seccion",
-                                            "Capturas de pantalla recomendadas listadas por seccion",
-                                            "Duracion estimada: 5-10 minutos",
-                                            "Formato profesional segun rubrica"
-                                        ],
-                         "status":  "pending",
-                         "created_at":  "2026-06-14T12:00:00Z",
-                         "transitions":  [
-
-                                         ]
+                      },
+                      {
+                          "id":  23,
+                          "name":  "documentation",
+                          "title":  "F23: Documentacion completa del proyecto",
+                          "description":  "Documentar todo el proyecto: README.md con instrucciones de setup, codigo comentado, docs/ actualizados con arquitectura completa, diagrama de flujo CI/CD, instrucciones de rollback, troubleshooting. Documentacion clara, completa y bien estructurada segun rubrica.",
+                          "stack":  "fullstack",
+                          "acceptance":  [
+                                             "README.md con: descripcion, prerequisitos, setup rapido, estructura de directorios",
+                                             "Codigo fuente comentado: clases, metodos, controladores con Javadoc",
+                                             "docs/architecture.md actualizado con diagrama de arquitectura K8S",
+                                             "docs/deployment.md con instrucciones de deploy y rollback",
+                                             "docs/configuration.md con variables de entorno y configuracion Spring Boot",
+                                             "docs/verification.md con pasos para verificar cada componente",
+                                             "Instrucciones de rollback documentadas en docs/deployment.md",
+                                             "Diagrama de flujo CI/CD incluido"
+                                         ],
+                          "status":  "done",
+                          "created_at":  "2026-06-14T12:00:00Z",
+                          "transitions":  [
+                                              {
+                                                  "from":  "pending",
+                                                  "to":  "in_progress",
+                                                  "at":  "2026-06-15T19:20:00Z"
+                                              },
+                                              {
+                                                  "from":  "in_progress",
+                                                  "to":  "done",
+                                                  "at":  "2026-06-15T19:45:00Z"
+                                              }
+                                          ]
+                      },
+                      {
+                          "id":  24,
+                          "name":  "video_demo_script",
+                          "title":  "F24: Guion para video de demostracion (5-10 min)",
+                          "description":  "Crear guion estructurado para video de demostracion de 5-10 minutos mostrando: (a) Microservicio Spring Boot funcionando local, (b) Docker build y push, (c) Helm charts y values, (d) ArgoCD UI con sincronizacion, (e) CI/CD pipeline en accion, (f) Deploy exitoso y verificacion. Incluir timeline, dialogos sugeridos, capturas de pantalla recomendadas.",
+                          "stack":  "fullstack",
+                          "acceptance":  [
+                                             "Guion con timeline detallado (minuto a minuto)",
+                                             "Secciones: demo local, Docker, Helm, ArgoCD, CI/CD, deploy",
+                                             "Dialogos sugeridos por seccion",
+                                             "Capturas de pantalla recomendadas listadas por seccion",
+                                             "Duracion estimada: 5-10 minutos",
+                                             "Formato profesional segun rubrica"
+                                         ],
+                          "status":  "done",
+                          "created_at":  "2026-06-14T12:00:00Z",
+                          "transitions":  [
+                                              {
+                                                  "from":  "pending",
+                                                  "to":  "in_progress",
+                                                  "at":  "2026-06-15T19:45:00Z"
+                                              },
+                                              {
+                                                  "from":  "in_progress",
+                                                  "to":  "done",
+                                                  "at":  "2026-06-15T20:00:00Z"
+                                              }
+                                          ]
                      }
                  ],
     "rules":  {
