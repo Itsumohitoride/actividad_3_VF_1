@@ -6,4 +6,4 @@ metadata:
     {{- include "microservice.labels" . | nindent 4 }}
 data:
   SPRING_PROFILES_ACTIVE: {{ .Values.config.springProfilesActive }}
-  HEALTH_SHOW_DETAILS: {{ .Values.config.healthShowDetails }}
+  MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: {{ .Values.config.healthShowDetails }}

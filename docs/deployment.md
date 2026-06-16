@@ -104,7 +104,13 @@ kubectl apply -f k8s/argocd/application.yaml
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # Obtener password inicial del admin
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+# Linux/Mac:
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d
+
+# Windows PowerShell:
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($_)) }
 
 # Login via CLI
 argocd login localhost:8080 --username admin

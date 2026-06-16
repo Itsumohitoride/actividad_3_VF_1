@@ -5,7 +5,7 @@ global:
 replicaCount: 1
 
 image:
-  tag: 07ab88c
+  tag: latest
   pullPolicy: Always
 
 service:

@@ -10,7 +10,7 @@ replicaCount: 1
 
 # -- Image configuration
 image:
-  repository: ghcr.io/namespace/microservice
+  repository: ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice
   tag: latest
   pullPolicy: IfNotPresent
 

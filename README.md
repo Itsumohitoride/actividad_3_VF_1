@@ -39,19 +39,16 @@ Trabajo practico de arquitectura de software: disenar e implementar microservici
 git clone https://github.com/Itsumohitoride/actividad_3_VF_1.git
 cd actividad_3_VF_1
 
-# 2. Build imagen (Gradle dentro del contenedor)
-docker build -t microservice:latest .
-
-# 3. Iniciar
+# 2. Build e iniciar (Gradle build dentro del contenedor)
 docker compose up --build -d
 
-# 4. Verificar
+# 3. Verificar
 curl http://localhost:8080/actuator/health
 
-# 5. Ver logs
+# 4. Ver logs
 docker compose logs -f
 
-# 6. Detener
+# 5. Detener
 docker compose down
 ```
 
@@ -69,6 +66,7 @@ docker build --no-cache -t microservice:latest .
 docker build -t microservice:latest .
 
 # Push a registry (GitHub Container Registry)
+docker login ghcr.io -u SU_USUARIO --password-stdin
 docker tag microservice:latest ghcr.io/SU_USUARIO/actividad-3-vf-1-microservice:TAG
 docker push ghcr.io/SU_USUARIO/actividad-3-vf-1-microservice:TAG
 ```
@@ -85,6 +83,29 @@ El Dockerfile es multi-stage:
 
 - Docker Desktop con Kubernetes habilitado
 - `kubectl` configurado para usar el contexto de Docker Desktop
+
+### Push de imagen a registry
+
+Antes de instalar el chart, buildear y pushear la imagen a un registry accesible por el cluster:
+
+```bash
+# Buildear
+docker build -t microservice:latest .
+
+# Taggear para GHCR (reemplazar YOUR_USERNAME)
+docker tag microservice:latest ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice:latest
+
+# Login y push
+echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+docker push ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice:latest
+```
+
+Luego actualizar `charts/microservice/values.yaml` con tu usuario real:
+```yaml
+image:
+  repository: ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice
+  tag: latest
+```
 
 ### Instalar el chart
 
@@ -156,8 +177,13 @@ Esto crea: namespace `argocd`, server, controller, repo-server, redis, dex, appl
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # Password del admin
+# Linux/Mac:
 kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | base64 -d
+
+# Windows PowerShell:
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($_)) }
 
 # Login
 argocd login localhost:8080 --username admin
@@ -275,7 +301,6 @@ Ver `docs/pipelines.md` para detalle completo.
 │       ├── main/java/.../
 │       │   ├── ProductServiceApplication.java
 │       │   └── controller/
-│       │       ├── HealthController.java
 │       │       └── ProductController.java
 │       └── test/java/.../
 │           └── ProductServiceApplicationTests.java
