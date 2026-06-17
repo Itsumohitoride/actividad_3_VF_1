@@ -95,10 +95,11 @@ helm lint ./charts/microservice
 # Previsualizar manifiestos
 helm template ./charts/microservice --values ./charts/microservice/values-dev.yaml
 
+# Eliminar ConfigMap si ya existe con anterioridad
+kubectl delete namespace dev
+
 # Instalar
-helm install microservice-dev ./charts/microservice \
-  --namespace dev --create-namespace \
-  --values ./charts/microservice/values-dev.yaml
+helm install microservice-dev ./charts/microservice --namespace dev --create-namespace --values ./charts/microservice/values-dev.yaml
 
 # Verificar
 kubectl get pods -n dev

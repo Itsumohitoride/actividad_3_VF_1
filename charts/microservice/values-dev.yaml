@@ -5,6 +5,7 @@ global:
 replicaCount: 1
 
 image:
+  repository: ghcr.io/itsumohitoride/actividad-3-vf-1-microservice
   tag: 07ab88c
   pullPolicy: Always
 
