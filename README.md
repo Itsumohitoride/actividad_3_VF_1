@@ -85,6 +85,9 @@ El Dockerfile es multi-stage:
 
 - Docker Desktop con Kubernetes habilitado
 - `kubectl` configurado para usar el contexto de Docker Desktop
+- Imagen Docker disponible en un registry accesible desde el cluster
+
+  > **Importante:** El valor `image.repository` en `values.yaml` (y por entorno) debe apuntar a un registry real. Por defecto usa `ghcr.io/namespace/microservice` como placeholder. Ajustalo antes de instalar, ej: `ghcr.io/tu-usuario/microservice`.
 
 ### Instalar el chart
 
@@ -95,7 +98,7 @@ helm lint ./charts/microservice
 # Previsualizar manifiestos
 helm template ./charts/microservice --values ./charts/microservice/values-dev.yaml
 
-# Eliminar ConfigMap si ya existe con anterioridad
+# Eliminar namespace si ya existe con anterioridad
 kubectl delete namespace dev
 
 # Instalar
@@ -141,14 +144,30 @@ helm rollback microservice-dev 1 --namespace dev
 ### 1. Instalar ArgoCD en el cluster
 
 ```bash
-# CRDs primero
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
+# 1a. CRDs primero (server-side apply)
+kubectl apply --server-side --force-conflicts -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable
 
-# Manifiestos
+# 1b. ArgoCD base (upstream oficial, server-side apply para evitar conflictos de anotaciones)
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# 1c. Crear namespace argocd (el upstream ya no lo incluye)
+kubectl create namespace argocd
+
+# 1d. Project + Application del microservicio
 kubectl apply -k k8s/argocd/
 ```
 
 Esto crea: namespace `argocd`, server, controller, repo-server, redis, dex, applicationset-controller, notifications-controller.
+
+> Si ya hay recursos previos y falla, borra el namespace y reaplica:
+> ```bash
+> kubectl delete namespace argocd
+> kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io --ignore-not-found
+> kubectl apply --server-side --force-conflicts -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable
+> kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+> kubectl create namespace argocd
+> kubectl apply -k k8s/argocd/
+> ```
 
 ### 2. Acceder a la UI
 
@@ -157,8 +176,7 @@ Esto crea: namespace `argocd`, server, controller, repo-server, redis, dex, appl
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # Password del admin
-kubectl -n argocd get secret argocd-initial-admin-secret \
-  -o jsonpath="{.data.password}" | base64 -d
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 # Login
 argocd login localhost:8080 --username admin
@@ -294,8 +312,10 @@ Ver `docs/pipelines.md` para detalle completo.
 | `docker build` falla | Sin conexion o cache corrupto | `docker build --no-cache` |
 | Container no responde | Puerto incorrecto | Verificar `server.port=8080` en Spring |
 | `helm install` falla | Namespace no existe | Agregar `--create-namespace` |
+| ConfigMap/Service "exists and cannot be imported" | Recursos de instalacion previa sin anotaciones Helm | `kubectl delete namespace dev` y reintentar |
+| Pod ImagePullBackOff | `image.repository` placeholder sin cambiar o registry inaccesible | Verificar `values-dev.yaml` apunte a un registry real; crear `imagePullSecrets` si es privado |
+| Pod CrashLoopBackOff | Read-only filesystem impide escritura en `/tmp` | Agregar `emptyDir` volume mount en `/tmp` al deployment |
 | ArgoCD no sincroniza | Credenciales Git invalidas | Verificar `repoURL` en application.yaml |
-| Pod CrashLoopBackOff | Health check falla | `kubectl logs pod/<name> -n dev` para ver error |
 | `./gradlew` permission denied | Permisos de ejecucion | `git update-index --chmod=+x src/gradlew` |
 
 ---
@@ -322,6 +342,10 @@ helm rollback microservice-dev 1 --namespace dev
 helm uninstall microservice-dev --namespace dev
 
 # ArgoCD
+kubectl apply --server-side --force-conflicts -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl create namespace argocd
+kubectl apply -k k8s/argocd/
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 argocd login localhost:8080
 argocd app list
