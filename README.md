@@ -106,13 +106,15 @@ helm install microservice-dev ./charts/microservice --namespace dev --create-nam
 
 # Verificar
 kubectl get pods -n dev
-kubectl port-forward deployment/microservice-dev -n dev 8080:8080
 
-# Health check
-curl http://localhost:8080/actuator/health
+# Port-forward (terminal 1, usar 9090 si 8080 esta ocupado por ArgoCD)
+kubectl port-forward deployment/microservice-dev -n dev 9090:8080
+
+# Health check (terminal 2)
+curl http://localhost:9090/actuator/health
 
 # Endpoint de productos
-curl http://localhost:8080/api/v1/products
+curl http://localhost:9090/api/v1/products
 ```
 
 ### Actualizar
@@ -172,17 +174,25 @@ Esto crea: namespace `argocd`, server, controller, repo-server, redis, dex, appl
 ### 2. Acceder a la UI
 
 ```bash
-# Port-forward
+# Port-forward (mantener esta terminal abierta)
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-# Password del admin
+# Password del admin — Linux/Mac
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# Password del admin — Windows (PowerShell)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
 
 # Login
 argocd login localhost:8080 --username admin
 
 # Abrir en navegador: https://localhost:8080
 ```
+
+> **Nota sobre puertos:** ArgoCD UI y el microservicio usan el mismo puerto 8080. No pueden correr al mismo tiempo.
+> - Para ArgoCD UI: `kubectl port-forward svc/argocd-server -n argocd 8080:443`
+> - Para microservicio: `kubectl port-forward deployment/microservice-dev -n dev 9090:8080` (usar puerto distinto)
+> - Si el navegador redirige a HTTPS, es porque ese puerto ya se uso antes con SSL. Cambia de puerto o borra cache del navegador.
 
 ### 3. Verificar la aplicacion
 
@@ -315,7 +325,12 @@ Ver `docs/pipelines.md` para detalle completo.
 | ConfigMap/Service "exists and cannot be imported" | Recursos de instalacion previa sin anotaciones Helm | `kubectl delete namespace dev` y reintentar |
 | Pod ImagePullBackOff | `image.repository` placeholder sin cambiar o registry inaccesible | Verificar `values-dev.yaml` apunte a un registry real; crear `imagePullSecrets` si es privado |
 | Pod CrashLoopBackOff | Read-only filesystem impide escritura en `/tmp` | Agregar `emptyDir` volume mount en `/tmp` al deployment |
-| ArgoCD no sincroniza | Credenciales Git invalidas | Verificar `repoURL` en application.yaml |
+| `kubectl apply -f install.yaml` falla con CRD annotation too long | Mezcla de client-side y server-side apply | Usar `--server-side --force-conflicts` siempre |
+| `kubectl apply -k k8s/argocd/` dice namespace not found | El upstream `install.yaml` ya no incluye el namespace | Ejecutar `kubectl create namespace argocd` antes |
+| ArgoCD no sincroniza: "unable to resolve branch" | `targetRevision` en `application.yaml` apunta a rama inexistente | Verificar que la rama exista en el repo remoto |
+| ArgoCD repo-server: connection refused | El servicio tarda en iniciar | Esperar 10-15s y reintentar `argocd app sync` |
+| Navegador redirige a HTTPS en localhost | Puerto 8080 ya se uso antes con HTTPS (cache del navegador) | Usar otro puerto (9090) para el microservicio |
+| `base64 -d` no funciona en Windows | Comando no existe en PowerShell | Usar `%{ [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_)) }` |
 | `./gradlew` permission denied | Permisos de ejecucion | `git update-index --chmod=+x src/gradlew` |
 
 ---
@@ -331,7 +346,7 @@ curl localhost:8080/actuator/health
 # K8s
 kubectl get pods -n dev
 kubectl logs deployment/microservice-dev -n dev
-kubectl port-forward deployment/microservice-dev -n dev 8080:8080
+kubectl port-forward deployment/microservice-dev -n dev 8080:8080   # si 8080 da conflicto con ArgoCD, usar 9090:8080
 
 # Helm
 helm lint ./charts/microservice
@@ -341,17 +356,34 @@ helm upgrade microservice-dev ./charts/microservice --namespace dev --values ./c
 helm rollback microservice-dev 1 --namespace dev
 helm uninstall microservice-dev --namespace dev
 
-# ArgoCD
+# ArgoCD — instalacion
 kubectl apply --server-side --force-conflicts -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable
 kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl create namespace argocd
 kubectl apply -k k8s/argocd/
+
+# ArgoCD — password (Windows)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" ^
+  | %{ [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_)) }
+
+# ArgoCD — password (Linux/Mac)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# ArgoCD — UI (terminal 1)
 kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+# ArgoCD — CLI (terminal 2)
 argocd login localhost:8080
 argocd app list
 argocd app get microservice-dev
 argocd app sync microservice-dev
 argocd app rollback microservice-dev 1
+
+# Limpiar ArgoCD completamente y reiniciar
+kubectl delete namespace argocd
+kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io
+kubectl delete clusterrole argocd-application-controller argocd-applicationset-controller argocd-server
+kubectl delete clusterrolebinding argocd-application-controller argocd-applicationset-controller argocd-server
 ```
 
 ---
