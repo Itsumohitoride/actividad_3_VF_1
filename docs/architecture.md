@@ -89,7 +89,7 @@
 
 ### Helm Charts
 - **Chart:** `charts/microservice/`
-- **Templates:** deployment, service, ingress, configmap, hpa
+- **Templates:** deployment, service, ingress, configmap
 - **Entornos:** dev, staging, prod (values-{env}.yaml)
 
 ### ArgoCD (GitOps)

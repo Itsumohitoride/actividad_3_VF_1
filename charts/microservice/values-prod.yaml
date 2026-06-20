@@ -1,6 +1,5 @@
 # Environment-specific values: production
-global:
-  environment: production
+environment: production
 
 replicaCount: 3
 
@@ -11,13 +10,6 @@ image:
 ingress:
   enabled: true
   host: api.microservice.com
-  tls: true
-  tlsSecret: microservice-tls
-
-autoscaling:
-  enabled: true
-  minReplicas: 3
-  maxReplicas: 10
 
 config:
   springProfilesActive: prod

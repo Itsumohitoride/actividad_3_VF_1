@@ -1,4 +1,4 @@
-# CI/CD Pipelines
+﻿# CI/CD Pipelines
 
 ## Overview
 
@@ -71,3 +71,4 @@ sed -i 's/tag: .*/tag: local/' charts/microservice/values-dev.yaml
 # Deploy with Helm
 helm upgrade --install microservice-dev charts/microservice -f charts/microservice/values-dev.yaml --namespace dev
 ```
+
