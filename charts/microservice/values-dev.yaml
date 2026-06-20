@@ -1,6 +1,5 @@
 # Environment-specific values: development
-global:
-  environment: development
+environment: development
 
 replicaCount: 1
 
@@ -10,9 +9,6 @@ image:
 
 service:
   type: NodePort
-
-ingress:
-  enabled: false
 
 config:
   springProfilesActive: dev

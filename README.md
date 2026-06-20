@@ -1,4 +1,4 @@
-# K8S Microservices — Spring Boot + Gradle Containerized
+﻿# K8S Microservices — Spring Boot + Gradle Containerized
 
 Microservicio Spring Boot containerizado con Helm charts parametrizables, despliegue GitOps mediante ArgoCD, y pipelines CI/CD automatizados con GitHub Actions.
 
@@ -92,18 +92,18 @@ Antes de instalar el chart, buildear y pushear la imagen a un registry accesible
 # Buildear
 docker build -t microservice:latest .
 
-# Taggear para GHCR (reemplazar YOUR_USERNAME)
-docker tag microservice:latest ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice:latest
+# Taggear para GHCR
+docker tag microservice:latest ghcr.io/Itsumohitoride/actividad-3-vf-1-microservice:latest
 
 # Login y push
-echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
-docker push ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice:latest
+echo $GITHUB_TOKEN | docker login ghcr.io -u Itsumohitoride --password-stdin
+docker push ghcr.io/Itsumohitoride/actividad-3-vf-1-microservice:latest
 ```
 
-Luego actualizar `charts/microservice/values.yaml` con tu usuario real:
+La imagen se configura en `charts/microservice/values.yaml`:
 ```yaml
 image:
-  repository: ghcr.io/YOUR_USERNAME/actividad-3-vf-1-microservice
+  repository: ghcr.io/Itsumohitoride/actividad-3-vf-1-microservice
   tag: latest
 ```
 
@@ -161,20 +161,23 @@ helm rollback microservice-dev 1 --namespace dev
 ### 1. Instalar ArgoCD en el cluster
 
 ```bash
-# CRDs primero
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml
+# 1. Crear namespace argocd (con apply para tener annotation)
+kubectl apply -f k8s/argocd/namespace.yaml
 
-# Manifiestos
+# 2. Instalar ArgoCD desde el manifest oficial (directo, no via kustomize)
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/install.yaml
+
+# 3. Aplicar recursos custom (AppProject, Application) via kustomize
 kubectl apply -k k8s/argocd/
 ```
 
-Esto crea: namespace `argocd`, server, controller, repo-server, redis, dex, applicationset-controller, notifications-controller.
+Paso 1 instala ArgoCD directamente (sin kustomize) porque los labels/namespace transforms de kustomize rompen los informers internos de ArgoCD. Paso 2 aplica solo nuestros recursos custom (project, application).
 
 ### 2. Acceder a la UI
 
 ```bash
 # Port-forward
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 9090:443
 
 # Password del admin
 # Linux/Mac:
@@ -186,9 +189,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($_)) }
 
 # Login
-argocd login localhost:8080 --username admin
+argocd login localhost:9090 --username admin
 
-# Abrir en navegador: https://localhost:8080
+# Abrir en navegador: https://localhost:9090
 ```
 
 ### 3. Verificar la aplicacion
@@ -270,10 +273,8 @@ Ver `docs/pipelines.md` para detalle completo.
 │   └── cd.yml               # Docker build+push + Helm values update + commit
 ├── charts/microservice/      # Helm chart
 │   ├── templates/            # K8s templates
-│   │   ├── _helpers.tpl      # Labels reutilizables
 │   │   ├── configmap.yaml    # Configuracion Spring Boot
-│   │   ├── deployment.yaml   # Deployment con probes, resources, emptyDir
-│   │   ├── hpa.yaml          # Autoescalado
+│   │   ├── deployment.yaml   # Deployment con probes y resources
 │   │   ├── ingress.yaml      # Ingress (opcional)
 │   │   └── service.yaml      # Service ClusterIP/NodePort
 │   ├── Chart.yaml            # Metadata del chart
@@ -288,7 +289,6 @@ Ver `docs/pipelines.md` para detalle completo.
 │   └── pipelines.md          # Documentacion de pipelines CI/CD
 ├── k8s/argocd/               # Manifiestos ArgoCD
 │   ├── namespace.yaml        # Namespace argocd
-│   ├── install.yaml          # Componentes ArgoCD
 │   ├── project.yaml          # AppProject microservice
 │   ├── application.yaml      # Application con auto-sync, self-heal, prune
 │   └── kustomization.yaml    # Kustomize overlay
@@ -326,35 +326,65 @@ Ver `docs/pipelines.md` para detalle completo.
 
 ## Referencia rapida de comandos
 
-```bash
-# Build y local
-docker build -t microservice:latest .
-docker compose up --build -d
-curl localhost:8080/actuator/health
+### Docker
 
-# K8s
-kubectl get pods -n dev
-kubectl logs deployment/microservice-dev -n dev
-kubectl port-forward deployment/microservice-dev -n dev 8080:8080
+| Comando | Explicacion |
+|---------|-------------|
+| `docker build -t microservice:latest .` | Construye la imagen desde el Dockerfile en el directorio actual (`.`). `-t` asigna nombre:tag. |
+| `docker build --no-cache -t microservice:latest .` | Construye ignorando cache de capas (build desde cero). Usar si hay problemas de cache. |
+| `docker tag microservice:latest ghcr.io/user/repo:tag` | Crea un alias de la imagen local apuntando a un registry remoto. |
+| `docker push ghcr.io/user/repo:tag` | Sube la imagen al registry remoto. |
+| `docker login ghcr.io -u user --password-stdin` | Autentica en GitHub Container Registry. `--password-stdin` lee el token desde stdin. |
+| `docker compose up --build -d` | Inicia servicios del compose. `--build` reconstruye antes de iniciar. `-d` corre en segundo plano. |
+| `docker compose logs -f` | Muestra logs de los servicios. `-f` sigue escribiendo (follow). |
+| `docker compose down` | Detiene y elimina contenedores, redes y volumenes del compose. |
 
-# Helm
-helm lint ./charts/microservice
-helm template ./charts/microservice --values ./charts/microservice/values-dev.yaml
-helm install microservice-dev ./charts/microservice --namespace dev --create-namespace --values ./charts/microservice/values-dev.yaml
-helm upgrade microservice-dev ./charts/microservice --namespace dev --values ./charts/microservice/values-dev.yaml
-helm rollback microservice-dev 1 --namespace dev
-helm uninstall microservice-dev --namespace dev
+### kubectl
 
-# ArgoCD
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-argocd login localhost:8080
-argocd app list
-argocd app get microservice-dev
-argocd app sync microservice-dev
-argocd app rollback microservice-dev 1
-```
+| Comando | Explicacion |
+|---------|-------------|
+| `kubectl get pods -n dev` | Lista pods en el namespace `dev`. `-n` especifica namespace. |
+| `kubectl logs deployment/microservice-dev -n dev` | Muestra logs del Deployment. |
+| `kubectl port-forward deployment/microservice-dev -n dev 8080:8080` | Redirige puerto local `8080` al puerto `8080` del pod. Acceder en `http://localhost:8080`. |
+| `kubectl port-forward svc/argocd-server -n argocd 9090:443` | Redirige puerto local `9090` al puerto `443` del servicio ArgoCD. Acceder en `https://localhost:9090`. |
+| `kubectl apply -f <archivo.yml>` | Aplica recursos K8s desde un archivo o URL. Crea o actualiza. |
+| `kubectl apply -k <directorio/>` | Aplica recursos usando Kustomize (combina YAMLs). |
+| `kubectl rollout undo deployment/<name> -n <ns>` | Revierte un Deployment a la revision anterior (rollback directo). |
+| `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password} | base64 -d` | Obtiene y decodifica el password inicial del admin de ArgoCD. |
+
+### Helm
+
+| Comando | Explicacion |
+|---------|-------------|
+| `helm lint ./charts/microservice` | Valida que el chart este bien formado (YAML valido, valores obligatorios). |
+| `helm template ./charts/microservice --values ./charts/microservice/values-dev.yaml` | Renderiza templates Go a YAML K8s sin instalar. Util para debug. |
+| `helm install microservice-dev ./charts/microservice --namespace dev --create-namespace --values ./charts/microservice/values-dev.yaml` | Instala el chart como release `microservice-dev` en namespace `dev`. `--create-namespace` lo crea si no existe. |
+| `helm upgrade microservice-dev ./charts/microservice --namespace dev --values ./charts/microservice/values-dev.yaml` | Actualiza un release existente (rolling update). |
+| `helm rollback microservice-dev 1 --namespace dev` | Revierte a la revision 1. Ver revisiones con `helm list --namespace dev`. |
+| `helm uninstall microservice-dev --namespace dev` | Elimina el release y sus recursos K8s. |
+
+### ArgoCD CLI
+
+| Comando | Explicacion |
+|---------|-------------|
+| `argocd login localhost:9090 --username admin` | Autentica en el servidor ArgoCD via port-forward. |
+| `argocd app list` | Lista todas las apps (sync status, health). |
+| `argocd app get microservice-dev` | Detalle de la app: recursos K8s, parametros, eventos. |
+| `argocd app sync microservice-dev` | Sincroniza manual: aplica Git -> cluster inmediatamente. |
+| `argocd app wait microservice-dev --health` | Bloquea hasta que la app este Healthy. |
+| `argocd app logs microservice-dev --follow` | Logs del sync. `--follow` como tail -f. |
+| `argocd app rollback microservice-dev 1` | Revierte a revision de deploy anterior. |
+
+### curl
+
+| Comando | Explicacion |
+|---------|-------------|
+| `curl http://localhost:8080/actuator/health` | Health check del microservicio. Responde `{"status":"UP"}` si funciona. |
+| `curl http://localhost:8080/api/v1/products` | Endpoint REST del microservicio. Retorna lista de productos JSON. |
 
 ---
+
+
 
 ## Documentacion adicional
 
@@ -364,3 +394,10 @@ argocd app rollback microservice-dev 1
 | `docs/configuration.md` | Variables de entorno, Spring Boot config, Helm values, secretos |
 | `docs/deployment.md` | Instructivo completo de deploy y rollback |
 | `docs/pipelines.md` | Detalle de workflows CI/CD, secretos, GitOps flow |
+
+
+
+
+
+
+

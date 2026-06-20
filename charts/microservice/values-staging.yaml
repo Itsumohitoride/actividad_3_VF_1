@@ -1,17 +1,14 @@
 # Environment-specific values: staging
-global:
-  environment: staging
+environment: staging
 
 replicaCount: 2
 
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 ingress:
   enabled: true
-  host: staging.microservice.com
-  tls: false
-  tlsSecret: ""
+  host: staging.microservice.local
 
 config:
   springProfilesActive: staging
