@@ -1,4 +1,4 @@
-﻿apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
@@ -43,11 +43,5 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
-          volumeMounts:
-            - name: tmp
-              mountPath: /tmp
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: tmp
-          emptyDir: {}
