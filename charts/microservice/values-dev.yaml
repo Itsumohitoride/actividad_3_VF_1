@@ -4,7 +4,7 @@ environment: development
 replicaCount: 1
 
 image:
-  tag: latest
+  tag: 026817e
   pullPolicy: Always
 
 service:
