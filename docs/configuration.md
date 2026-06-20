@@ -1,4 +1,4 @@
-# Configuracion — K8S Microservices
+﻿# Configuracion — K8S Microservices
 
 ## Variables de entorno
 
@@ -58,8 +58,7 @@ config:
 ### values-dev.yaml (desarrollo)
 
 ```yaml
-global:
-  environment: development
+environment: development
 
 image:
   tag: latest
@@ -75,8 +74,7 @@ config:
 ### values-staging.yaml
 
 ```yaml
-global:
-  environment: staging
+environment: staging
 
 replicaCount: 2
 
@@ -94,8 +92,7 @@ config:
 ### values-prod.yaml
 
 ```yaml
-global:
-  environment: production
+environment: production
 
 replicaCount: 3
 
@@ -109,17 +106,9 @@ service:
 ingress:
   enabled: true
   host: microservice.example.com
-  tls: true
-  tlsSecret: microservice-tls
 
 config:
   springProfilesActive: prod
-
-autoscaling:
-  enabled: true
-  minReplicas: 3
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 70
 ```
 
 ## Configuracion ArgoCD
@@ -151,3 +140,4 @@ Los workflows de GitHub Actions usan:
 
 > Para entornos on-premises, configurar credenciales de registry Docker
 > via `imagePullSecrets` en el Deployment de Kubernetes.
+

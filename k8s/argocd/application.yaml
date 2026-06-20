@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/Itsumohitoride/actividad_3_VF_1.git
     path: charts/microservice
-    targetRevision: feature/21-argocd-gitops
+    targetRevision: main
     helm:
       valueFiles:
         - values-dev.yaml

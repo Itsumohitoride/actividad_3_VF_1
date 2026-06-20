@@ -76,7 +76,6 @@ Los manifiestos de instalacion estan en `k8s/argocd/`:
 | Archivo | Proposito |
 |---------|-----------|
 | `namespace.yaml` | Namespace `argocd` |
-| `install.yaml` | Componentes minimos: server, controller, repo-server, redis |
 | `project.yaml` | AppProject `microservice` con destinos dev/staging/prod |
 | `application.yaml` | Application `microservice-dev` con auto-sync, self-heal, prune |
 | `kustomization.yaml` | Kustomize overlay combinando todos los recursos |
@@ -84,32 +83,40 @@ Los manifiestos de instalacion estan en `k8s/argocd/`:
 ### 5.1 Instalar ArgoCD en el cluster
 
 ```bash
-# Opcion A: Kustomize
-kubectl apply -k k8s/argocd/
-
-# Opcion B: Directo
+# 1. Crear namespace argocd (con apply para tener annotation)
 kubectl apply -f k8s/argocd/namespace.yaml
-kubectl apply -f k8s/argocd/install.yaml
-kubectl apply -f k8s/argocd/project.yaml
-kubectl apply -f k8s/argocd/application.yaml
+
+# 2. Instalar ArgoCD desde el manifest oficial (directo)
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/install.yaml
+
+# 3. Aplicar recursos custom (AppProject, Application) via kustomize
+kubectl apply -k k8s/argocd/
 ```
 
-> **Nota:** Las CRDs de ArgoCD (Application, AppProject, etc.) deben instalarse primero.
-> Descargar: `kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds.yaml`
+> **Por que dos pasos?** El kustomization.yaml trnasforma labels en los recursos. Aplicar install.yaml via kustomize rompe los informers internos de ArgoCD (CrashLoopBackOff con "configmap argocd-cm not found"). Instalando el manifest oficial directamente se evita el problema.
+
+
+
 
 ### 5.2 Acceder a UI de ArgoCD
 
 ```bash
 # Port-forward a la UI
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 9090:443
 
 # Obtener password inicial del admin
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+# Linux/Mac:
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d
+
+# Windows PowerShell:
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($_)) }
 
 # Login via CLI
-argocd login localhost:8080 --username admin
+argocd login localhost:9090 --username admin
 
-# Abrir en navegador: https://localhost:8080
+# Abrir en navegador: https://localhost:9090
 ```
 
 ### 5.3 Comandos CLI utiles
@@ -200,3 +207,5 @@ curl -f http://<service-url>/actuator/health
 | Container exitoso pero no responde | Puerto incorrecto | Verificar server.port y EXPOSE |
 | Docker build lento | Sin cache de capas | Ordenar COPY para cachear dependencias |
 | ArgoCD no sincroniza | Credenciales Git invalidas | Verificar repo config en argocd |
+
+
