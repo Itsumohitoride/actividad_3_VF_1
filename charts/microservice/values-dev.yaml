@@ -5,7 +5,7 @@ replicaCount: 1
 
 image:
   tag: 026817e
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 service:
   type: NodePort
